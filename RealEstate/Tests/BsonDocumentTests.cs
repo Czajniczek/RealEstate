@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization;
 using NUnit.Framework;
 using System;
 
@@ -70,6 +71,22 @@ namespace Tests
             Console.WriteLine(person["age"].ToDouble() + 10);
             Console.WriteLine(person["age"].IsInt32);
             Console.WriteLine(person["age"].IsString);
+        }
+
+        [Test]
+        public void ToBson()
+        {
+            var person = new BsonDocument
+            {
+                {"firstName", "Gabriel" }
+            };
+            var bson = person.ToBson();
+
+            Console.WriteLine(BitConverter.ToString(bson));
+
+            var deserializedPerson = BsonSerializer.Deserialize<BsonDocument>(bson);
+
+            Console.WriteLine(deserializedPerson);
         }
     }
 }
