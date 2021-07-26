@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using RealEstate.Data;
 using RealEstate.Models;
 using System;
 using System.Collections.Generic;
@@ -13,26 +14,28 @@ namespace RealEstate.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IConfiguration _configuration;
-        public MongoDatabase Database;
+        //private readonly ILogger<HomeController> _logger;
+        //private readonly IConfiguration _configuration;
+        //public MongoDatabase Database;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
-        {
-            _logger = logger;
-            _configuration = configuration;
+        public RealEstateContext Context = new RealEstateContext();
 
-            var client = new MongoClient(configuration["ConnectionStrings:RealEstateConnectionString"]);
-            var server = client.GetServer();
-            Database = server.GetDatabase(configuration["RealEstateDatabaseName"]);
-        }
+        //public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+        //{
+        //    _logger = logger;
+        //    _configuration = configuration;
+
+        //    var client = new MongoClient(configuration["ConnectionStrings:RealEstateConnectionString"]);
+        //    var server = client.GetServer();
+        //    Database = server.GetDatabase(configuration["RealEstateDatabaseName"]);
+        //}
 
         public IActionResult Index()
         {
             //return View();
 
-            Database.GetStats();
-            return Json(Database.Server.BuildInfo);
+            Context.Database.GetStats();
+            return Json(Context.Database.Server.BuildInfo);
         }
 
         public IActionResult Privacy()
