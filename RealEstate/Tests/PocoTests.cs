@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization.Attributes;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,13 @@ namespace Tests
 
             public List<string> Adress = new List<string>();
             public Contact Contact = new Contact();
+
+            [BsonIgnore]
+            public string IgnoreMe { get; set; }
+            [BsonElement("New")]
+            public string Old { get; set; }
+            [BsonElement]
+            private string Encapsulated { get; set; }
         }
 
         public class Contact
@@ -45,6 +53,14 @@ namespace Tests
 
             person.Contact.Email = "email@email.com";
             person.Contact.Phone = "123-456-789";
+
+            Console.WriteLine(person.ToJson());
+        }
+
+        [Test]
+        public void SerializationAttributes()
+        {
+            var person = new Person();
 
             Console.WriteLine(person.ToJson());
         }
