@@ -17,12 +17,14 @@ namespace Tests
             JsonWriterSettings.Defaults.Indent = true;
         }
 
+        //[BsonIgnoreExtraElements] - Ignoruje dane, które są w dokumencie, ale nie ma ich w modelu (nie rzuca wyjątkiem)
         public class Person
         {
             public string FirstName { get; set; }
             public int Age { get; set; }
 
             public List<string> Adress = new List<string>();
+            //[BsonIgnoreIfNull] - Zignoruje właściwość i jej nie wyświetli, jeżeli jej wartość to null
             public Contact Contact = new Contact();
 
             [BsonIgnore]
@@ -31,6 +33,15 @@ namespace Tests
             public string Old { get; set; }
             [BsonElement]
             private string Encapsulated { get; set; }
+
+            //[BsonRepresentation(BsonType.Double)] - Jawne określenie typu właściwości
+            //public decimal NetWorth { get; set; }
+            //[BsonDateTimeOptions(Kind = DateTimeKind.Local)] - Jawne ustawienie lokalnej strefy czasowej
+            //public DateTime BirthTime { get; set; }
+            //[BsonId] - Jawne określenie, która właściwość to identyfikator (Id)
+            //public int PersonId { get; set; }
+            //[BsonDateTimeOptions(DateOnly = true)] - Uwzględnienie tylko daty, bez przesunięcia czasowego
+            //public DateTime BirthDate { get; set; }
         }
 
         public class Contact
