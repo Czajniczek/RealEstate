@@ -58,5 +58,18 @@ namespace Tests
 
             Console.WriteLine(person);
         }
+
+        [Test]
+        public void BsonValueConversions()
+        {
+            var person = new BsonDocument
+            {
+                {"age", 54 }
+            };
+
+            Console.WriteLine(person["age"].ToDouble() + 10);
+            Console.WriteLine(person["age"].IsInt32);
+            Console.WriteLine(person["age"].IsString);
+        }
     }
 }
