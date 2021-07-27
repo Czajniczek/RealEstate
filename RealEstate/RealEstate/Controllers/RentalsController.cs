@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using RealEstate.Data;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,13 @@ namespace RealEstate.Rentals
             rental.AdjustPrice(adjustPrice);
 
             Context.Rentals.Save(rental);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(string id)
+        {
+            Context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));
 
             return RedirectToAction("Index");
         }
