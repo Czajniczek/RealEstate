@@ -9,6 +9,18 @@ namespace RealEstate.Rentals
 {
     public class Rental
     {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
+        public string Description { get; set; }
+        public int NumberOfRooms { get; set; }
+        public List<string> Address = new List<string>();
+
+        [BsonRepresentation(BsonType.Double)]
+        public decimal Price { get; set; }
+
+        public List<PriceAdjustment> Adjustments = new List<PriceAdjustment>();
+
         public Rental() { }
 
         public Rental(PostRental postRental)
@@ -19,14 +31,12 @@ namespace RealEstate.Rentals
             Address = (postRental.Address ?? string.Empty).Split('\n').ToList();
         }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public void AdjustPrice(AdjustPrice adjustPrice)
+        {
+            var adjustment = new PriceAdjustment(adjustPrice, Price);
 
-        public string Description { get; set; }
-        public int NumberOfRooms { get; set; }
-        public List<string> Address = new List<string>();
-
-        [BsonRepresentation(BsonType.Double)]
-        public decimal Price { get; set; }
+            Adjustments.Add(adjustment);
+            Price = adjustPrice.NewPrice;
+        }
     }
 }
