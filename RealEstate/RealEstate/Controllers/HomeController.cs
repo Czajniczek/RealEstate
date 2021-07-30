@@ -14,7 +14,7 @@ namespace RealEstate.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger;
         //private readonly IConfiguration _configuration;
         //public MongoDatabase Database;
 
@@ -30,10 +30,15 @@ namespace RealEstate.Controllers
         //    Database = server.GetDatabase(configuration["RealEstateDatabaseName"]);
         //}
 
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
             Context.Database.GetStats();
-         
+
             return Json(Context.Database.Server.BuildInfo);
         }
 
@@ -48,6 +53,7 @@ namespace RealEstate.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        #region Generated HomeController
         //private readonly ILogger<HomeController> _logger;
 
         //public HomeController(ILogger<HomeController> logger)
@@ -70,5 +76,6 @@ namespace RealEstate.Controllers
         //{
         //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //}
+        #endregion
     }
 }

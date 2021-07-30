@@ -59,6 +59,20 @@ namespace RealEstate.Rentals
             return RedirectToAction("Index");
         }
 
+        //[HttpPost]
+        //public IActionResult AdjustPrice(string id, AdjustPrice adjustPrice)
+        //{
+        //    var rental = GetRental(id);
+        //    var adjustment = new PriceAdjustment(adjustPrice, rental.Price);
+        //    var modificationUpdate = Update<Rental>
+        //        .Push(r => r.Adjustments, adjustment)
+        //        .Set(r => r.Price, adjustment.NewPrice);
+
+        //    Context.Rentals.Update(Query.EQ("_id", new ObjectId(id)), modificationUpdate);
+
+        //    return RedirectToAction("Index");
+        //}
+
         public IActionResult Delete(string id)
         {
             Context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));

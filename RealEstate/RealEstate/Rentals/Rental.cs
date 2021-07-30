@@ -11,24 +11,22 @@ namespace RealEstate.Rentals
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
+        public List<string> Address = new List<string>();
+        public List<PriceAdjustment> Adjustments = new List<PriceAdjustment>();
         public string Description { get; set; }
         public int NumberOfRooms { get; set; }
-        public List<string> Address = new List<string>();
-
         [BsonRepresentation(BsonType.Double)]
         public decimal Price { get; set; }
 
-        public List<PriceAdjustment> Adjustments = new List<PriceAdjustment>();
-
+        // Deserializacja
         public Rental() { }
 
         public Rental(PostRental postRental)
         {
+            Address = (postRental.Address ?? string.Empty).Split('\n').ToList();
             Description = postRental.Description;
             NumberOfRooms = postRental.NumberOfRooms;
             Price = postRental.Price;
-            Address = (postRental.Address ?? string.Empty).Split('\n').ToList();
         }
 
         public void AdjustPrice(AdjustPrice adjustPrice)

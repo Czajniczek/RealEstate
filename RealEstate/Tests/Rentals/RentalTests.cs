@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using NUnit.Framework;
 using RealEstate.Rentals;
 using System;
@@ -12,6 +13,11 @@ namespace Tests.Rentals
     [TestFixture]
     class RentalTests : AssertionHelper
     {
+        public RentalTests()
+        {
+            JsonWriterSettings.Defaults.Indent = true;
+        }
+
         [Test]
         public void ToDocument_RentalWithPrice_PriceRepresentedAsDouble()
         {
@@ -21,6 +27,17 @@ namespace Tests.Rentals
             var document = rental.ToBsonDocument();
 
             Expect(document["Price"].BsonType, Is.EqualTo(BsonType.Double));
+
+            Console.WriteLine(document);
+
+            //{
+            //    "Address" : [],
+            //    "Adjustments" : [],
+            //    "_id" : null,
+            //    "Description" : null,
+            //    "NumberOfRooms" : 0,
+            //    "Price" : 1.0
+            //}
         }
 
         [Test]
@@ -32,6 +49,17 @@ namespace Tests.Rentals
             var document = rental.ToBsonDocument();
 
             Expect(document["_id"].BsonType, Is.EqualTo(BsonType.ObjectId));
+
+            Console.WriteLine(document);
+
+            //{
+            //    "Address" : [],
+            //    "Adjustments" : [],
+            //    "_id" : ObjectId("6103bceb511bf789b947230e"),
+            //    "Description" : null,
+            //    "NumberOfRooms" : 0,
+            //    "Price" : 0.0
+            //}
         }
     }
 }

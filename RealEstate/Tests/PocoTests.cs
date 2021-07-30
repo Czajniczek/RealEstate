@@ -17,14 +17,14 @@ namespace Tests
             JsonWriterSettings.Defaults.Indent = true;
         }
 
-        //[BsonIgnoreExtraElements] - Ignoruje dane, które są w dokumencie, ale nie ma ich w modelu (nie rzuca wyjątkiem)
+        //[BsonIgnoreExtraElements]
         public class Person
         {
             public string FirstName { get; set; }
             public int Age { get; set; }
 
             public List<string> Adress = new List<string>();
-            //[BsonIgnoreIfNull] - Zignoruje właściwość i jej nie wyświetli, jeżeli jej wartość to null
+            //[BsonIgnoreIfNull]
             public Contact Contact = new Contact();
 
             [BsonIgnore]
@@ -34,13 +34,13 @@ namespace Tests
             [BsonElement]
             private string Encapsulated { get; set; }
 
-            //[BsonRepresentation(BsonType.Double)] - Jawne określenie typu właściwości
+            //[BsonRepresentation(BsonType.Double)]
             //public decimal NetWorth { get; set; }
-            //[BsonDateTimeOptions(Kind = DateTimeKind.Local)] - Jawne ustawienie lokalnej strefy czasowej
+            //[BsonDateTimeOptions(Kind = DateTimeKind.Local)]
             //public DateTime BirthTime { get; set; }
-            //[BsonId] - Jawne określenie, która właściwość to identyfikator (Id)
+            //[BsonId]
             //public int PersonId { get; set; }
-            //[BsonDateTimeOptions(DateOnly = true)] - Uwzględnienie tylko daty, bez przesunięcia czasowego
+            //[BsonDateTimeOptions(DateOnly = true)]
             //public DateTime BirthDate { get; set; }
         }
 
@@ -65,15 +65,47 @@ namespace Tests
             person.Contact.Email = "email@email.com";
             person.Contact.Phone = "123-456-789";
 
+            Console.WriteLine(person);
             Console.WriteLine(person.ToJson());
+
+            //Tests.PocoTests + Person
+            //{
+            //    "Adress" : ["101 Some Road", "Unit 501"],
+            //    "Contact" : {
+            //        "Email" : "email@email.com",
+            //        "Phone" : "123-456-789"
+            //    },
+            //    "FirstName" : "Gabriel",
+            //    "Age" : 21,
+            //    "New" : null,
+            //    "Encapsulated" : null
+            //}
         }
 
         [Test]
         public void SerializationAttributes()
         {
             var person = new Person();
+            //person.NetWorth = 10.09m;
+            //person.BirthTime = new DateTime(2014, 1, 2, 11, 30, 0);
 
             Console.WriteLine(person.ToJson());
+            Console.WriteLine(person.ToBson());
+            Console.WriteLine(BitConverter.ToString(person.ToBson()));
+
+            //{
+            //    "Adress" : [],
+            //    "Contact" : {
+            //        "Email" : null,
+            //        "Phone" : null
+            //    },
+            //    "FirstName" : null,
+            //    "Age" : 0,
+            //    "New" : null,
+            //    "Encapsulated" : null
+            //}
+            //System.Byte[]
+            //55 - 00 - 00 - 00 - 04 - 41 - 64 - 72 - 65 - 73 - 73 - 00 - 05 - 00 - 00 - 00 - 00 - 03 - 43 - 6F - 6E-74 - 61 - 63 - 74 - 00 - 13 - 00 - 00 - 00 - 0A - 45 - 6D - 61 - 69 - 6C - 00 - 0A - 50 - 68 - 6F - 6E-65 - 00 - 00 - 0A - 46 - 69 - 72 - 73 - 74 - 4E-61 - 6D - 65 - 00 - 10 - 41 - 67 - 65 - 00 - 00 - 00 - 00 - 00 - 0A - 4E-65 - 77 - 00 - 0A - 45 - 6E-63 - 61 - 70 - 73 - 75 - 6C - 61 - 74 - 65 - 64 - 00 - 00
         }
     }
 }

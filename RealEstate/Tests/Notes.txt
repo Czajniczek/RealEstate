@@ -1,0 +1,14 @@
+﻿Serialization Attributes:
+• [BsonIgnore] - wyklucza pole lub właściwość
+• [BsonElement("New")] - zmienia nazwę pola lub właściwości
+• [BsonElement] - uwzględnia pole lub właściwość, która nie jest domyślnie uwzględniana np. prywatne pole
+• [BsonIgnoreIfNull] - wyklucza element, którego wartość to null
+• [BsonRepresentation(BsonType.Double)] - Jawne określenie typu właściwości na double
+• [BsonDateTimeOptions(Kind = DateTimeKind.Local)] - jawne ustawienie lokalnej strefy czasowej
+• [BsonId] - jawne określenie, która właściwość to identyfikator (Id)
+• [BsonDateTimeOptions(DateOnly = true)] - uwzględnienie tylko daty, bez przesunięcia czasowego (UTC)
+• [BsonIgnoreExtraElements] - (na poziomie klasy a nie właściwości) ignoruje dane, które są w dokumencie, ale nie ma ich w modelu (nie rzuca wyjątkiem)
+• [BsonRepresentation(BsonType.ObjectId)] - jawne określenie typu na ObjectId
+• 
+• 
+• 

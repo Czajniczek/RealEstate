@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Rentals
 {
+    // Informacje od użytkownika podczas dokonywania korekty ceny
     public class AdjustPrice
     {
         public decimal NewPrice { get; set; }
