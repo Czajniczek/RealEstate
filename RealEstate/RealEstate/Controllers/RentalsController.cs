@@ -16,7 +16,13 @@ namespace RealEstate.Rentals
 
         public IActionResult Index(RentalsFilter filters)
         {
-            var rentals = FilterRentals(filters);
+            //var cursor = FilterRentals(filters);
+            //cursor.ToList();
+            //var results = cursor
+            //    .SetSortOrder(SortBy<Rental>.Ascending(r => r.Price));
+
+            var rentals = FilterRentals(filters)
+                .SetSortOrder(SortBy<Rental>.Ascending(r => r.Price));
             var model = new RentalsList
             {
                 Rentals = rentals,
