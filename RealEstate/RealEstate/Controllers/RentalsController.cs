@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.Linq;
 using RealEstate.Data;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,8 @@ namespace RealEstate.Rentals
 
         public IActionResult Index(RentalsFilter filters)
         {
-            //var cursor = FilterRentals(filters);
-            //cursor.ToList();
-            //var results = cursor
-            //    .SetSortOrder(SortBy<Rental>.Ascending(r => r.Price));
-
-            var rentals = FilterRentals(filters)
-                .SetSortOrder(SortBy<Rental>.Ascending(r => r.Price));
+            var rentals = FilterRentals(filters);
+            //.SetSortOrder(SortBy<Rental>.Ascending(r => r.Price));
             var model = new RentalsList
             {
                 Rentals = rentals,
@@ -32,18 +28,40 @@ namespace RealEstate.Rentals
             return View(model);
         }
 
-        private MongoCursor<Rental> FilterRentals(RentalsFilter filters)
+        // Using Find to Add a Price Limit Filter
+        //private MongoCursor<Rental> FilterRentals(RentalsFilter filters)
+        //{
+        //    if (!filters.PriceLimit.HasValue)
+        //    {
+        //        return Context.Rentals.FindAll();
+        //    }
+
+        //    var query = Query<Rental>.LTE(r => r.Price, filters.PriceLimit);
+
+        //    return Context.Rentals.Find(query);
+        //}
+
+        private IEnumerable<Rental> FilterRentals(RentalsFilter filters)
         {
-            if (!filters.PriceLimit.HasValue)
+            IQueryable<Rental> rentals = Context.Rentals.AsQueryable()
+                .OrderBy(r => r.Price);
+
+            if (filters.MinimumRooms.HasValue)
             {
-                return Context.Rentals.FindAll();
+                rentals = rentals
+                    .Where(r => r.NumberOfRooms >= filters.MinimumRooms);
             }
 
-            var query = Query<Rental>.LTE(r => r.Price, filters.PriceLimit);
+            if (filters.PriceLimit.HasValue)
+            {
+                var query = Query<Rental>.LTE(r => r.Price, filters.PriceLimit);
 
-            return Context.Rentals.Find(query);
+                rentals = rentals
+                    .Where(r => query.Inject());
+            }
+
+            return rentals;
         }
-
         public IActionResult Post()
         {
             return View();
