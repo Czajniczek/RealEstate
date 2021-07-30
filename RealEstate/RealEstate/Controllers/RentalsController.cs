@@ -121,5 +121,12 @@ namespace RealEstate.Rentals
 
             return RedirectToAction("Index");
         }
+
+        public string PriceDistribution()
+        {
+            return new QueryPriceDistribution()
+                .Run(Context.Rentals)
+                .ToJson();
+        }
     }
 }
