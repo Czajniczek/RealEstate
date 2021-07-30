@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using RealEstate.Data;
 using System;
@@ -13,11 +14,28 @@ namespace RealEstate.Rentals
     {
         public readonly RealEstateContext Context = new RealEstateContext();
 
-        public IActionResult Index()
+        public IActionResult Index(RentalsFilter filters)
         {
-            var rentals = Context.Rentals.FindAll();
+            var rentals = FilterRentals(filters);
+            var model = new RentalsList
+            {
+                Rentals = rentals,
+                Filters = filters
+            };
 
-            return View(rentals);
+            return View(model);
+        }
+
+        private MongoCursor<Rental> FilterRentals(RentalsFilter filters)
+        {
+            if (!filters.PriceLimit.HasValue)
+            {
+                return Context.Rentals.FindAll();
+            }
+
+            var query = Query<Rental>.LTE(r => r.Price, filters.PriceLimit);
+
+            return Context.Rentals.Find(query);
         }
 
         public IActionResult Post()
@@ -41,7 +59,7 @@ namespace RealEstate.Rentals
             return View(rental);
         }
 
-        public Rental GetRental(string id)
+        private Rental GetRental(string id)
         {
             var rental = Context.Rentals.FindOneById(new ObjectId(id));
 
