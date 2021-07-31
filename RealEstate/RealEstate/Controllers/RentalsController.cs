@@ -157,5 +157,14 @@ namespace RealEstate.Rentals
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult GetImage(string id)
+        {
+            var image = Context.Database.GridFS.FindOneById(new ObjectId(id));
+
+            if(image == null) return NotFound();
+
+            return File(image.OpenRead(), image.ContentType);
+        }
     }
 }

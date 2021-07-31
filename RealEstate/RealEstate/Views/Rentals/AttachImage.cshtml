@@ -33,10 +33,10 @@
         </div>
     </div>
 }
-@*@if (Model.HasImage())
+@if (Model.HasImage())
 {
     <img src="@Url.Action("GetImage", new {id = @Model.ImageId})" />
-}*@
+}
 <div>
     @Html.ActionLink("Back to Rentals", "Index")
 </div>
