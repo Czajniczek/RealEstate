@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 using RealEstate.Data;
 using System;
@@ -127,6 +129,33 @@ namespace RealEstate.Rentals
             return new QueryPriceDistribution()
                 .Run(Context.Rentals)
                 .ToJson();
+        }
+
+        public IActionResult AttachImage(string id)
+        {
+            var rental = GetRental(id);
+
+            return View(rental);
+        }
+
+        [HttpPost]
+        public IActionResult AttachImage(string id, IFormFile file) // .NET Core nie obsługuje już "HttpPostedFileBase"
+        {
+            var rental = GetRental(id);
+            var imageId = ObjectId.GenerateNewId();
+
+            rental.ImageId = imageId.ToString();
+            Context.Rentals.Save(rental);
+            
+            var options = new MongoGridFSCreateOptions
+            {
+                Id = imageId,
+                ContentType = file.ContentType
+            };
+
+            Context.Database.GridFS.Upload(file.OpenReadStream(), file.FileName, options); // .NET Core nie obsługuje już file.InputStream - https://forums.asp.net/t/2090370.aspx?Inputstream+and+contentlength+is+missing+in+microsoft+aspnet+http+abstractions
+
+            return RedirectToAction("Index");
         }
     }
 }

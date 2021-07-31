@@ -17,6 +17,7 @@ namespace RealEstate.Rentals
         public int NumberOfRooms { get; set; }
         [BsonRepresentation(BsonType.Double)]
         public decimal Price { get; set; }
+        public string ImageId { get; set; }
 
         // Deserializacja
         public Rental() { }
