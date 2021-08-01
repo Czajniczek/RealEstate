@@ -36,10 +36,10 @@ namespace Tests
             };
             person.Add("firstName", new BsonString("Gabriel"));
 
-            Console.WriteLine(person.ToJson());
+            Console.WriteLine($"To JSON: {person.ToJson()}");
             Console.WriteLine(person);
 
-            //{
+            //To JSON: {
             //    "age" : 54,
             //    "IsAlive" : true,
             //    "firstName" : "Gabriel"
@@ -116,15 +116,15 @@ namespace Tests
             };
             var bson = person.ToBson();
 
-            Console.WriteLine(bson);
-            Console.WriteLine(BitConverter.ToString(bson));
+            Console.WriteLine($"To BSON: {bson}");
+            Console.WriteLine($"To BSON in HEX: {BitConverter.ToString(bson)}");
 
             var deserializedPerson = BsonSerializer.Deserialize<BsonDocument>(bson);
 
             Console.WriteLine(deserializedPerson);
 
-            //System.Byte[]
-            //1C - 00 - 00 - 00 - 02 - 66 - 69 - 72 - 73 - 74 - 4E-61 - 6D - 65 - 00 - 08 - 00 - 00 - 00 - 47 - 61 - 62 - 72 - 69 - 65 - 6C - 00 - 00
+            //BSON: System.Byte[]
+            //BSON in HEX: 1C - 00 - 00 - 00 - 02 - 66 - 69 - 72 - 73 - 74 - 4E-61 - 6D - 65 - 00 - 08 - 00 - 00 - 00 - 47 - 61 - 62 - 72 - 69 - 65 - 6C - 00 - 00
             //{
             //    "firstName" : "Gabriel"
             //}

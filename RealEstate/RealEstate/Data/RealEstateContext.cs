@@ -24,13 +24,15 @@ namespace RealEstate.Data
             MongoServer server = client.GetServer();
 
             Database = server.GetDatabase("RealEstate");
+            //Database = server.GetDatabase("Test"); - Baza utworzy się automatycznie po dodaniu do niej jakiegokolwiek elementu
         }
 
         public MongoCollection<Rental> Rentals
         {
             get
             {
-                return Database.GetCollection<Rental>("rentals");
+                return Database.GetCollection<Rental>("Rentals");
+                //return Database.GetCollection<Rental>("rentals"); - Kolekcja sama się utworzy po dodaniu do niej jakiegokolwiek elementu
             }
         }
     }

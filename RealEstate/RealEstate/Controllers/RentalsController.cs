@@ -30,7 +30,7 @@ namespace RealEstate.Rentals
             return View(model);
         }
 
-        // Using Find to Add a Price Limit Filter
+        // Demo: Using Find to Add a Price Limit Filter
         //private MongoCursor<Rental> FilterRentals(RentalsFilter filters)
         //{
         //    if (!filters.PriceLimit.HasValue)
@@ -64,6 +64,7 @@ namespace RealEstate.Rentals
 
             return rentals;
         }
+
         public IActionResult Post()
         {
             return View();
@@ -103,6 +104,7 @@ namespace RealEstate.Rentals
             return RedirectToAction("Index");
         }
 
+        // Modyfikacja zamiast zastępowania
         //[HttpPost]
         //public IActionResult AdjustPrice(string id, AdjustPrice adjustPrice)
         //{
@@ -138,18 +140,6 @@ namespace RealEstate.Rentals
             return View(rental);
         }
 
-        //[HttpPost]
-        //public IActionResult AttachImage(string id, IFormFile file) // .NET Core nie obsługuje już "HttpPostedFileBase"
-        //{
-        //    var rental = GetRental(id);
-
-        //    if (rental.HasImage()) DeleteImage(rental);
-
-        //    StoreImage(file, rental);
-
-        //    return RedirectToAction("Index");
-        //}
-
         [HttpPost]
         public IActionResult AttachImage(string id, IFormFile file) // .NET Core nie obsługuje już "HttpPostedFileBase"
         {
@@ -157,51 +147,44 @@ namespace RealEstate.Rentals
 
             if (rental.HasImage()) DeleteImage(rental);
 
-            StoreImage(file, id);
+            StoreImage(file, rental);
 
             return RedirectToAction("Index");
         }
 
-        //private void DeleteImage(Rental rental)
+        //[HttpPost]
+        //public IActionResult AttachImage(string id, IFormFile file) // .NET Core nie obsługuje już "HttpPostedFileBase"
         //{
-        //    Context.Database.GridFS.DeleteById(new ObjectId(rental.ImageId));
-        //    rental.ImageId = null;
-        //    Context.Rentals.Save(rental);
+        //    var rental = GetRental(id);
+
+        //    if (rental.HasImage()) DeleteImage(rental);
+
+        //    StoreImage(file, id);
+
+        //    return RedirectToAction("Index");
         //}
 
         private void DeleteImage(Rental rental)
         {
             Context.Database.GridFS.DeleteById(new ObjectId(rental.ImageId));
-
-            // użycie modyfikacji zamiast zastąpienia
-            SetRentalImageId(rental.Id, null); // <- odłączenie obrazu
+            rental.ImageId = null;
+            Context.Rentals.Save(rental);
         }
 
-        //private void StoreImage(IFormFile file, Rental rental) // .NET Core nie obsługuje już "HttpPostedFileBase"
+        //private void DeleteImage(Rental rental)
         //{
-        //    var imageId = ObjectId.GenerateNewId();
+        //    Context.Database.GridFS.DeleteById(new ObjectId(rental.ImageId));
 
-        //    rental.ImageId = imageId.ToString();
-        //    Context.Rentals.Save(rental);
-
-        //    // użycie modyfikacji zamiast zastąpienia
-        //    //SetRentalImageId(rental.Id, imageId.ToString()); // <- połączenie obrazu
-
-        //    var options = new MongoGridFSCreateOptions
-        //    {
-        //        Id = imageId,
-        //        ContentType = file.ContentType
-        //    };
-
-        //    Context.Database.GridFS.Upload(file.OpenReadStream(), file.FileName, options); // .NET Core nie obsługuje już file.InputStream - https://forums.asp.net/t/2090370.aspx?Inputstream+and+contentlength+is+missing+in+microsoft+aspnet+http+abstractions
+        //    // Użycie modyfikacji zamiast zastępowania
+        //    SetRentalImageId(rental.Id, null); // Odłączenie obrazu
         //}
 
-        private void StoreImage(IFormFile file, string rentalId) // .NET Core nie obsługuje już "HttpPostedFileBase"
+        private void StoreImage(IFormFile file, Rental rental) // .NET Core nie obsługuje już "HttpPostedFileBase"
         {
             var imageId = ObjectId.GenerateNewId();
 
-            // użycie modyfikacji zamiast zastąpienia
-            SetRentalImageId(rentalId, imageId.ToString()); // <- połączenie obrazu
+            rental.ImageId = imageId.ToString();
+            Context.Rentals.Save(rental);
 
             var options = new MongoGridFSCreateOptions
             {
@@ -211,6 +194,22 @@ namespace RealEstate.Rentals
 
             Context.Database.GridFS.Upload(file.OpenReadStream(), file.FileName, options); // .NET Core nie obsługuje już file.InputStream - https://forums.asp.net/t/2090370.aspx?Inputstream+and+contentlength+is+missing+in+microsoft+aspnet+http+abstractions
         }
+
+        //private void StoreImage(IFormFile file, string rentalId) // .NET Core nie obsługuje już "HttpPostedFileBase"
+        //{
+        //    var imageId = ObjectId.GenerateNewId();
+
+        //    // Użycie modyfikacji zamiast zastępowania
+        //    SetRentalImageId(rentalId, imageId.ToString()); // Podłączenie obrazu
+
+        //    var options = new MongoGridFSCreateOptions
+        //    {
+        //        Id = imageId,
+        //        ContentType = file.ContentType
+        //    };
+
+        //    Context.Database.GridFS.Upload(file.OpenReadStream(), file.FileName, options); // .NET Core nie obsługuje już file.InputStream - https://forums.asp.net/t/2090370.aspx?Inputstream+and+contentlength+is+missing+in+microsoft+aspnet+http+abstractions
+        //}
 
         private void SetRentalImageId(string rentalId, string imageId)
         {

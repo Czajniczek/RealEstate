@@ -9,7 +9,9 @@ namespace RealEstate.Rentals
     public class PriceAdjustment
     {
         public decimal OldPrice { get; set; }
+
         public decimal NewPrice { get; set; }
+
         public string Reason { get; set; }
 
         public PriceAdjustment(AdjustPrice adjustPrice, decimal oldPrice)

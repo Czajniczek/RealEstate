@@ -66,10 +66,10 @@ namespace Tests
             person.Contact.Phone = "123-456-789";
 
             Console.WriteLine(person);
-            Console.WriteLine(person.ToJson());
+            Console.WriteLine($"To JSON: {person.ToJson()}");
 
             //Tests.PocoTests + Person
-            //{
+            //To JSON: {
             //    "Adress" : ["101 Some Road", "Unit 501"],
             //    "Contact" : {
             //        "Email" : "email@email.com",
@@ -89,11 +89,11 @@ namespace Tests
             //person.NetWorth = 10.09m;
             //person.BirthTime = new DateTime(2014, 1, 2, 11, 30, 0);
 
-            Console.WriteLine(person.ToJson());
-            Console.WriteLine(person.ToBson());
-            Console.WriteLine(BitConverter.ToString(person.ToBson()));
+            Console.WriteLine($"To JSON: {person.ToJson()}");
+            Console.WriteLine($"To BSON: {person.ToBson()}");
+            Console.WriteLine($"To BSON in HEX: {BitConverter.ToString(person.ToBson())}");
 
-            //{
+            //To JSON: {
             //    "Adress" : [],
             //    "Contact" : {
             //        "Email" : null,
@@ -104,8 +104,8 @@ namespace Tests
             //    "New" : null,
             //    "Encapsulated" : null
             //}
-            //System.Byte[]
-            //55 - 00 - 00 - 00 - 04 - 41 - 64 - 72 - 65 - 73 - 73 - 00 - 05 - 00 - 00 - 00 - 00 - 03 - 43 - 6F - 6E-74 - 61 - 63 - 74 - 00 - 13 - 00 - 00 - 00 - 0A - 45 - 6D - 61 - 69 - 6C - 00 - 0A - 50 - 68 - 6F - 6E-65 - 00 - 00 - 0A - 46 - 69 - 72 - 73 - 74 - 4E-61 - 6D - 65 - 00 - 10 - 41 - 67 - 65 - 00 - 00 - 00 - 00 - 00 - 0A - 4E-65 - 77 - 00 - 0A - 45 - 6E-63 - 61 - 70 - 73 - 75 - 6C - 61 - 74 - 65 - 64 - 00 - 00
+            //To BSON: System.Byte[]
+            //To BSON in HEX: 55 - 00 - 00 - 00 - 04 - 41 - 64 - 72 - 65 - 73 - 73 - 00 - 05 - 00 - 00 - 00 - 00 - 03 - 43 - 6F - 6E-74 - 61 - 63 - 74 - 00 - 13 - 00 - 00 - 00 - 0A - 45 - 6D - 61 - 69 - 6C - 00 - 0A - 50 - 68 - 6F - 6E-65 - 00 - 00 - 0A - 46 - 69 - 72 - 73 - 74 - 4E-61 - 6D - 65 - 00 - 10 - 41 - 67 - 65 - 00 - 00 - 00 - 00 - 00 - 0A - 4E-65 - 77 - 00 - 0A - 45 - 6E-63 - 61 - 70 - 73 - 75 - 6C - 61 - 74 - 65 - 64 - 00 - 00
         }
     }
 }

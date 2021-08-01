@@ -1,4 +1,8 @@
-﻿Serialization Attributes:
+﻿Ranking baz danych - https://db-engines.com/en/ranking
+Pobieranie serwera MongoDB - https://www.mongodb.com/try
+MongoDB drivers - https://docs.mongodb.com/drivers/
+Uruchomienie serwera MongoDB - mongod --dbpath ../data
+Serialization Attributes:
 • [BsonIgnore] - wyklucza pole lub właściwość
 • [BsonElement("New")] - zmienia nazwę pola lub właściwości
 • [BsonElement] - uwzględnia pole lub właściwość, która nie jest domyślnie uwzględniana np. prywatne pole
